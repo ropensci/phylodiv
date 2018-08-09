@@ -5,6 +5,9 @@
 \alias{phylodiv-package}
 \alias{phylodiv}
 \title{Phylogenetic Biodiversity Query Tools}
+\description{
+Phylogenetic Biodiversity Query Tools
+}
 \author{
 Scott Chamberlain \email{myrmecocystus@gmail.com}
 }
