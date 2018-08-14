@@ -37,13 +37,19 @@ given a tree
 tree
 ```
 
-extract taxonomy from that tree
+read the tree
 
 ```r
-pd_phy_tax()
+pd_read()
 ```
 
-then collect all higher taxonomic information from those names
+extract taxonomy from the tree
+
+```r
+pd_tax()
+```
+
+collect all higher taxonomic information from those names
 
 ```r
 pd_tax_hier()
@@ -64,8 +70,42 @@ pd_biodiv()
 visualize results
 
 ```r
-pd_vis()
+pd_viz()
 ```
+
+## Thinking out loud
+
+**general questions**
+- how do people interact with phylogenies in R? that is how to they most often refer to nodes/tips?
+
+**pd_read**:
+- make sure to handle any local or remote tree, and many R tree objects
+
+**pd_tax_hier**:
+- add option to use taxizedb to handle large data problems better
+- is there a way to programatically label upstream nodes after collecting taxonomic hierarchies?
+
+**pd_query**:
+- this is the most slippery problem
+- two major approaches: taxonomic or phylogenetic 
+    - taxonomic e.g., if user wants specific names (e.g., i want species A, B, and C)
+    - phylogenetic e.g., if user wants to see clade A compared to clade B
+- what to do if a user wants higher node in the tree for which we don't know the name?
+    - are there tools to guess these names?
+    - possibly just error with message telling user to name that node?
+
+**pd_biodiv** options include (assuming using GBIF):
+- get all occurrences (via `rgbif::occ_data()`), slowish; need caching mechanism
+- get just count data (via `rgbif::occ_data()`, but just get counts), fast; probably no need for caching mechanism
+- GBIF downloads (via `rgbif::occ_download()`), slowish, but only option to "get all the data"; need caching mechanism
+
+**pd_viz** options include:
+- base plots, plain ol maps
+- GBIF maps API, rasters:
+    - with base plots, static maps
+    - with leaflet, interactive maps
+- do we support maps of occurences matched against a phylogeny? or is that not needed?
+- perhaps other R packages can be leveraged here
 
 ## Meta
 
