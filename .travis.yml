@@ -6,9 +6,6 @@ dist: trusty
 r_github_packages:
   - jimhester/covr
 
-r_binary_packages:
-  - vegan
-
 matrix:
   include:
     - os: linux
@@ -31,5 +28,4 @@ notifications:
 
 env:
   global:
-    - R_CHECK_ARGS="--no-build-vignettes --no-manual --timings --as-cran --run-donttest"
-    - _R_CHECK_TIMINGS_="0"
+    - R_CHECK_ARGS="--no-build-vignettes --as-cran"
