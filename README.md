@@ -4,7 +4,7 @@ phylodiv
 
 
 
-[![Build Status](https://travis-ci.org/ropensci/phylodiv.svg?branch=master)](https://travis-ci.org/ropensci/phylodiv)
+[![Build Status](https://travis-ci.com/ropensci/phylodiv.svg?branch=master)](https://travis-ci.com/ropensci/phylodiv)
 [![Build status](https://ci.appveyor.com/api/projects/status/6mgc02mkd8j4sq3g/branch/master)](https://ci.appveyor.com/project/sckott/phylodiv-175/branch/master)
 [![codecov.io](https://codecov.io/github/ropensci/phylodiv/coverage.svg?branch=master)](https://codecov.io/github/ropensci/phylodiv?branch=master)
 [![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/phylodiv)](https://github.com/metacran/cranlogs.app)
