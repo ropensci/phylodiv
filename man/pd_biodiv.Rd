@@ -4,10 +4,28 @@
 \alias{pd_biodiv}
 \title{Gather biodiversity records}
 \usage{
-pd_biodiv(x, db = "gbif", ...)
+pd_biodiv(x, db = "gbif", type = "count", by = NULL, ...)
 }
 \arguments{
-\item{tree}{a phylogeny represented as a newick string}
+\item{x}{an object of class `phylodiv`}
+
+\item{db}{(character) the database to use to get 
+taxonomic information. only option is "gbif" for now}
+
+\item{type}{(character) one of count or facet}
+
+\item{by}{(character) only used if `type = "by"`. one of country, ...}
+
+\item{...}{further args passed on to [rgbif::occ_data()]}
+}
+\value{
+an object of class `phylodiv`, a named list with slots:
+
+- tree
+- tips
+- nodes
+- hierarchies
+- data
 }
 \description{
 Gather biodiversity records
@@ -17,9 +35,21 @@ Gather biodiversity records
 library(ape)
 data(chiroptera)
 st <- ape::subtrees(chiroptera)[[393]]
-x <- pd_phy_tax(tree = st)
+x <- pd_tax(pd_read(st))
 res <- pd_tax_hier(x)
-res <- pd_query(res, A ~ B)
-pd_biodiv(res)
+spp <- c("Eptesicus serotinus", "Eptesicus fuscus", 
+  "Eptesicus furinalis", "Eptesicus brasiliensis")
+res <- pd_query(res, spp)
+
+# facet data: e.g., facet on country
+biodiv <- pd_biodiv(res, type = 'facet', by = "country")
+biodiv
+biodiv$data
+
+# count data
+counts <- pd_biodiv(res, type = 'count')
+counts
+counts$data
+counts$data$count
 }
 }

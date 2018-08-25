@@ -7,17 +7,37 @@
 pd_tax_hier(x, db = "ncbi", ...)
 }
 \arguments{
-\item{tree}{a phylogeny represented as a newick string}
+\item{x}{an object of class `phylodiv`}
+
+\item{db}{(character) the database to use to get 
+taxonomic information. only option is "ncbi" for now}
+
+\item{...}{ignored}
+}
+\value{
+an object of class `phylodiv`, a named list with slots:
+
+- tree
+- tips
+- nodes
+- hierarchies
 }
 \description{
 Gather taxonomic hierarchies
 }
+\section{taxonomic data}{
+
+Uses \pkg{taxizedb} internally
+}
+
 \examples{
 library(ape)
 data(chiroptera)
 st <- ape::subtrees(chiroptera)[[393]]
-x <- pd_phy_tax(tree = st)
+(x <- pd_read(st))
+(x <- pd_tax(x))
 res <- pd_tax_hier(x)
 res
 res$hierarchies
+res$taxmap
 }

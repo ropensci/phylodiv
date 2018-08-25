@@ -1,30 +1,71 @@
 #' Construct phylogenetically based query
 #' 
 #' @export
-#' @param x a `phylodiv` object
+#' @param x an object of class `phylodiv`
+#' @param query query statement
+#' @section Use cases:
+#' 
+#' Taxonomy based queries (leverages \pkg{taxa}), e.g:
+#' - taxa A vs. taxa B (bypass the tree in this case, but do make 
+#' sure the taxa are in the tree?)
+#' - taxa A, taxa B, taxa C, etc. (bypass the tree in this case, but 
+#' do make sure the taxa are in the tree?)
+#' 
+#' Phylogeny based queries (no solution for this yet):
+#' - all taxa downstream from A (use tree to get clade from A)
+#' - all taxa upstream from A (use tree to get higher taxa above A)
+#' - all taxa not in genus B (use tree to get all tips not in genus B;
+#' in other words, drop clade B)
+#' 
 #' @examples \dontrun{
 #' library(ape)
 #' data(chiroptera)
 #' st <- ape::subtrees(chiroptera)[[393]]
+#' st <- ape::subtrees(chiroptera)[[2]]
+#' x <- pd_read(st)
+#' x <- pd_tax(x)
+#' res <- pd_tax_hier(x)
+#' 
+#' # with a taxmap
+#' res
+#' res$hierarchies
+#' res$taxmap
+#' pd_query(res, startsWith(taxon_names, "Pteropus"))
+#' 
+#' # with metacoder::parse_phylo()
+#' library(ape)
+#' data(bird.orders)
+#' x <- pd_read(bird.orders)
+#' x <- pd_tax(x)
+#' res <- pd_tax_hier2(x) 
+#' res$taxmap
+#' res <- pd_query(res, startsWith(taxon_names, "C"))
+#' 
 #' 
 #' # A compared to sister clade
-#' pd_query(st, "Eptesicus bobrinskoi", "Eptesicus bottae")
-#' # pd_query(st, "Eptesicus bobrinskoi", "Eptesicus bar")
+#' spp <- c("Eptesicus serotinus", "Eptesicus fuscus", 
+#'   "Eptesicus furinalis", "Eptesicus brasiliensis")
+#' pd_query(res, spp)
+#' # pd_query(res, "Eptesicus bobrinskoi", "Eptesicus bar")
 #' 
 #' # A compared to B
-#' pd_query(st, A ~ B)
+#' # pd_query(res, A ~ B)
 #' 
 #' # A compared to B
-#' pd_query(st, A ~ B)
+#' # pd_query(res, A ~ B)
 #' }
-pd_query <- function(tree, x, y) {
-  tree$tip.label <- gsub("_", " ", tree$tip.label)
-  stopifnot(x %in% tree$tip.label)
-  stopifnot(y %in% tree$tip.label)
-  list(
-    tree = tree,
-    x = x,
-    y = y
-  )
-  # %in% tree$tip.label
+# pd_query <- function(x, tax_query = NULL, phy_query = NULL) {
+pd_query <- function(x, query) {
+  assert(x, "phylodiv")
+  # if (!is.null(phy_query)) stop("phy_query ignored for now")
+  x$tree$tip.label <- gsub("_", " ", x$tree$tip.label)
+  x$query_target <- query
+  structure(x, class = "phylodiv")
+  # x$taxmap <- taxa::filter_taxa(x$taxmap, ...)
+  # structure(x, class = "phylodiv")
 }
+
+# NOTES:
+# - if we do go route of using taxa, then we can support 
+#  flexible taxonomy based queries & then for phylogeny based queries
+#  support what we can as separte from taxonomy queries

@@ -18,9 +18,9 @@ assert <- function(x, y) {
   }
 }
 
-dt2df <- function(x) {
+dt2df <- function(x, idcol = TRUE) {
   (data.table::setDF(
-    data.table::rbindlist(x, use.names = TRUE, fill = TRUE, idcol = TRUE)))
+    data.table::rbindlist(x, use.names = TRUE, fill = TRUE, idcol = idcol)))
 }
 
 `%||%` <- function (x, y) if (is.null(x) || length(x) == 0) y else x
