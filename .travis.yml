@@ -5,11 +5,14 @@ dist: trusty
 
 r_github_packages:
   - jimhester/covr
+  - ropensci/rgbif
+  - thomasp85/patchwork
+
+bioc_packages:
+  - ggtree
 
 matrix:
   include:
-    - os: linux
-      r: oldrel
     - os: linux
       r: release
       env: R_CODECOV=true
