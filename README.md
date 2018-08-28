@@ -162,7 +162,7 @@ jsonlite::fromJSON(file)
 **pd_read**:
 - make sure to handle any local or remote tree, and many R tree objects
 
-**pd_tax_hier**:
+**pd_taxa**:
 - add option to use taxizedb to handle large data problems better
 - is there a way to programatically label upstream nodes after collecting taxonomic hierarchies?
 
@@ -180,7 +180,7 @@ jsonlite::fromJSON(file)
 - get just count data (via `rgbif::occ_data()`, but just get counts), fast; probably no need for caching mechanism
 - GBIF downloads (via `rgbif::occ_download()`), slowish, but only option to "get all the data"; need caching mechanism
 
-**pd_viz** options include:
+**pd_vis** options include:
 - base plots, plain ol maps
 - GBIF maps API, rasters:
     - with base plots, static maps
