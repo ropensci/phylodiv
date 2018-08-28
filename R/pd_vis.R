@@ -11,13 +11,13 @@
 #' library(ape)
 #' data(chiroptera)
 #' st <- ape::subtrees(chiroptera)[[393]]
-#' x <- pd_tax(tree = st)
-#' res <- pd_tax_hier(x)
+#' x <- pd_read(st)
+#' res <- pd_taxa(x)
 #' spp <- c("Eptesicus serotinus", "Eptesicus fuscus", 
 #'   "Eptesicus furinalis", "Eptesicus brasiliensis")
 #' res <- pd_query(res, spp)
-#' # x <- pd_biodiv(res) # skip this to go directly to pd_vis
-#' pd_vis(res)
+#' # skip pd_biodiv to go directly to pd_vis
+#' pd_vis(res, "raster")
 #' 
 #' # export 
 #' png("myplot.png")
@@ -29,8 +29,8 @@
 #' library(ape)
 #' data(chiroptera)
 #' st <- ape::subtrees(chiroptera)[[393]]
-#' x <- pd_tax(pd_read(st))
-#' res <- pd_tax_hier(x)
+#' x <- pd_read(st)
+#' res <- pd_taxa(x)
 #' spp <- c("Eptesicus serotinus", "Eptesicus fuscus", 
 #'   "Eptesicus furinalis", "Eptesicus brasiliensis")
 #' res <- pd_query(res, spp)
@@ -44,8 +44,8 @@
 #' library(ape)
 #' data(chiroptera)
 #' st <- ape::subtrees(chiroptera)[[393]]
-#' x <- pd_tax(pd_read(st))
-#' res <- pd_tax_hier(x)
+#' x <- pd_read(st)
+#' res <- pd_taxa(x)
 #' spp <- c("Eptesicus serotinus", "Eptesicus fuscus", 
 #'   "Eptesicus furinalis", "Eptesicus brasiliensis")
 #' res <- pd_query(res, spp)
@@ -57,7 +57,7 @@
 #' pd_vis(counts, type = "count")
 #' }
 pd_vis <- function(x, type = "facet", ...) {
-  assert(x, "phylodiv")
+  assert(x, "PhyloDiv")
   
   switch(type,
     facet = {
@@ -65,22 +65,24 @@ pd_vis <- function(x, type = "facet", ...) {
       check_pkg("choroplethrMaps")
       check_pkg("patchwork")
       targ <- x$data$facet
-      targ$region <- apply(targ, 1, function(z) 
+      tmp <- apply(targ, 1, function(z) 
         tolower(phylodiv_isocodes[grep(z['country'], phylodiv_isocodes$code), 'name']))
+      tmp <- vapply(tmp, function(z) if (length(z) == 0) NA_character_ else z, "")
+      targ$region <- tmp
+      targ <- na.omit(targ)
       names(targ)[3] <- 'value'
-      maps <- lapply(split(targ, targ$taxon), function(w) {
-        suppressWarnings(choroplethr::country_choropleth(w))
-      })
-      patchwork::wrap_plots(maps)
+      splittarg <- split(targ, targ$taxon)
+      maps <- Map(function(a, b) {
+        # suppressWarnings(choroplethr::country_choropleth(a, title = b))
+        suppressWarnings(choroplethr::country_choropleth(a))
+      }, splittarg, names(splittarg))
+      patchwork::wrap_plots(maps, ncol = 1)
     },
     count = {
-      # library(ggtree)
-      # nwk <- system.file("extdata", "sample.nwk", package="treeio")
-      # tree <- read.tree(nwk)
-      # p <- ggtree::ggtree(tree)
-      x$tree$tip.label <- tax_abbrev(x$tree$tip.label)
+      ptree <- x$trees[[1]]$tree
+      ptree$tip.label <- tax_abbrev(gsub("_", " ", ptree$tip.label))
       x$data$count$taxon <- tax_abbrev(x$data$count$taxon)
-      p <- ggtree::ggtree(x$tree)
+      p <- ggtree::ggtree(ptree)
       p %<+% x$data$count + 
         # ggtree::geom_tiplab() +
         ggtree::geom_tippoint(ggtree::aes(size = count), alpha = 0.25)
@@ -89,13 +91,17 @@ pd_vis <- function(x, type = "facet", ...) {
       check_pkg("raster")
       # dat <- x$data
       # if no gbif metadata yet get it
-      tmp <- lapply(x$query_target, rgbif::name_backbone)
+      tmp <- lapply(x$query, rgbif::name_backbone)
       tmp <- Filter(function(z) "usageKey" %in% names(z), tmp)
       keys <- vapply(tmp, "[[", 1, "usageKey")
       if (length(keys) > 1) {
-        lapply(keys, function(w) {
+        rr <- lapply(keys, function(w) {
           z <- rgbif::map_fetch(taxonKey = w)
         })
+        requireNamespace("raster")
+        plot(raster::brick(rr))
+        # par(mfrow = c(2,2))
+        # for (i in seq_along(rr)) plot(rr[[i]])
       } else {
         z <- rgbif::map_fetch(taxonKey = keys)
         plot(z)

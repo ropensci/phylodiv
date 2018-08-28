@@ -8,6 +8,7 @@
 #' @importFrom graphics plot
 #' @importFrom stats na.omit
 #' @importFrom utils head
+#' @importFrom ape Ntip Nnode read.tree write.tree
 #' @name phylodiv-package
 #' @aliases phylodiv
 #' @docType package

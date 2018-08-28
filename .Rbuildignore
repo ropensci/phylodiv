@@ -16,3 +16,5 @@ README.Rmd
 docs
 .github
 ^codemeta\.json$
+.csv
+.zip

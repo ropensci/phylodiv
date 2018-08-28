@@ -19,9 +19,9 @@
 #' library(ape)
 #' data(chiroptera)
 #' st <- ape::subtrees(chiroptera)[[393]]
-#' x <- pd_tax(pd_read(st))
-#' res <- pd_tax_hier(x)
-#' spp <- c("Eptesicus serotinus", "Eptesicus fuscus", 
+#' x <- pd_read(st)
+#' res <- pd_taxa(x)
+#' spp <- c("Eptesicus serotinus", "Eptesicus fuscus",
 #'   "Eptesicus furinalis", "Eptesicus brasiliensis")
 #' res <- pd_query(res, spp)
 #' 
@@ -37,15 +37,15 @@
 #' counts$data$count
 #' }
 pd_biodiv <- function(x, db = "gbif", type = "count", by = NULL, ...) {
-  assert(x, "phylodiv")
+  assert(x, "PhyloDiv")
   dat_count <- dat_facet <- NULL
   if (type == "count") {
-    tmp <- rgbif::occ_data(scientificName = x$query_target, limit = 0)
+    tmp <- rgbif::occ_data(scientificName = x$query, limit = 0)
     dat_count <- namedvec2df(tc(lapply(tmp, "[[", c('meta', 'count'))))
   }
   if (type == "facet") {
     stopifnot(!is.null(by))
-    tmp <- rgbif::occ_search(scientificName = x$query_target, facet = by, 
+    tmp <- rgbif::occ_search(scientificName = x$query, facet = by, 
       limit = 0)
     tmp <- lapply(tmp, function(z) z$facets[[by]])
     dat_facet <- dt2df(tmp)
@@ -56,7 +56,8 @@ pd_biodiv <- function(x, db = "gbif", type = "count", by = NULL, ...) {
   # }
   x$data <- list(count = dat_count, facet = dat_facet)
   # x$data <- dplyr::bind_rows(lapply(tmp, "[[", "data"))
-  structure(x, class = "phylodiv")
+  # structure(x, class = "phylodiv")
+  return(x)
 }
 
 namedvec2df <- function(x) {

@@ -8,7 +8,7 @@ pd_read(tree)
 }
 \arguments{
 \item{tree}{a phylogeny represented as a newick string or a
-`phylo` object}
+`phylo` object, or a \pkg{tidytree} `tbl_tree` object}
 }
 \value{
 an object of class `phylodiv`, a named list with slots:
@@ -21,6 +21,13 @@ an object of class `phylodiv`, a named list with slots:
 Read a tree to a phylodiv object
 }
 \examples{
+# character
+x <- "((Strix_aluco:4.2,Asio_otus:4.2):3.1,Athene_noctua:7.3);"
+tree <- ape::read.tree(text = x)
+z <- pd_read(tree = tree)
+z
+
+# phylo
 library(ape)
 data(chiroptera)
 st <- ape::subtrees(chiroptera)[[393]]
@@ -29,4 +36,12 @@ x
 x$tree
 x$tips
 x$nodes
+
+# tbl_tree
+library(tidytree)
+library(ape)
+set.seed(2017)
+tree <- rtree(4)
+x <- as_data_frame(tree)
+pd_read(x)
 }

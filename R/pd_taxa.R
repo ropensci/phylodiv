@@ -4,6 +4,8 @@
 #' @param x an object of class `phylodiv`
 #' @param db (character) the database to use to get 
 #' taxonomic information. only option is "ncbi" for now
+#' @param drop_no_data (logical) drop tips w/o taxonomic 
+#' hierarchy data. default: `TRUE`
 #' @param ... ignored
 #' @return an object of class `phylodiv`, a named list with slots:
 #' 
@@ -20,29 +22,40 @@
 #' data(chiroptera)
 #' st <- ape::subtrees(chiroptera)[[393]]
 #' (x <- pd_read(st))
-#' (x <- pd_tax(x))
-#' res <- pd_tax_hier(x)
-#' res
-#' res$hierarchies
-#' res$taxmap
-pd_tax_hier <- function(x, db = "ncbi", ...) {
-  assert(x, "phylodiv")
-  if (!is.character(x$tips)) stop("tip labels must be of class character")
+#' (res <- pd_taxa(x))
+#' res$trees
+#' res$trees[[1]]$hierarchies
+#' res$fetch_hierarchies()
+pd_taxa <- function(x, db = "ncbi", drop_no_data = TRUE, ...) {
+  assert(x, "PhyloDiv")
+  
+  # if (!is.character(x$tips)) stop("tip labels must be of class character")
   # res <- taxize::classification(x$tips, db = db)
-  res <- taxizedb::classification(x$tips, db = db)
-  # drop those with no hierarchy data
-  keep <- res[vapply(res, NROW, 1) > 1]
-  throw <- res[vapply(res, NROW, 1) <= 1]
-  message("dropping ", length(throw), " tips w/o hierarchies")
-  # prune tree with dropped taxa
-  x$tree <- ape::drop.tip(x$tree, gsub("\\s", "_", names(throw)))
-  # assign hierarchies
-  x$hierarchies <- keep
-  structure(x, class = "phylodiv")
+  # res <- taxizedb::classification(x$tips, db = db)
+  
+  invisible(lapply(x$trees, function(z) {
+    w <- taxizedb::classification(z$unique_names, db = db)
+    if (drop_no_data) {
+      keep <- w[vapply(w, NROW, 1) > 1]
+      throw <- w[vapply(w, NROW, 1) <= 1]
+      if (length(throw) > 0) {
+        message("dropping ", length(throw), " tips w/o hierarchies")
+        # prune tree with dropped taxa
+        z$tree <- ape::drop.tip(z$tree, gsub("\\s", "_", names(throw)))
+      }
+    }
+    z$hierarchies <- w
+  }))
+  
+  return(x)
+  # # assign hierarchies
+  # x$hierarchies <- keep
+  # x
+  # structure(x, class = "phylodiv")
 }
 
 # using taxa::parse_tax_data
-# pd_tax_hier1 <- function(x, db = "ncbi", ...) {
+# pd_taxa1 <- function(x, db = "ncbi", ...) {
 #   assert(x, "phylodiv")
 #   if (!is.character(x$tips)) stop("tip labels must be of class character")
 #   # res <- taxize::classification(x$tips, db = db)
@@ -76,7 +89,7 @@ pd_tax_hier <- function(x, db = "ncbi", ...) {
 # }
 
 # using metacoder::parse_phylo
-# pd_tax_hier2 <- function(x, db = "ncbi", ...) {
+# pd_taxa2 <- function(x, db = "ncbi", ...) {
 #   assert(x, "phylodiv")
 #   if (!is.character(x$tips)) stop("tip labels must be of class character")
 #   x$taxmap <- metacoder::parse_phylo(x$tree)

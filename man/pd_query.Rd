@@ -37,8 +37,7 @@ data(chiroptera)
 st <- ape::subtrees(chiroptera)[[393]]
 st <- ape::subtrees(chiroptera)[[2]]
 x <- pd_read(st)
-x <- pd_tax(x)
-res <- pd_tax_hier(x)
+res <- pd_taxa(x)
 
 # with a taxmap
 res
@@ -51,7 +50,7 @@ library(ape)
 data(bird.orders)
 x <- pd_read(bird.orders)
 x <- pd_tax(x)
-res <- pd_tax_hier2(x) 
+res <- pd_taxa2(x) 
 res$taxmap
 res <- pd_query(res, startsWith(taxon_names, "C"))
 

@@ -23,8 +23,7 @@
 #' st <- ape::subtrees(chiroptera)[[393]]
 #' st <- ape::subtrees(chiroptera)[[2]]
 #' x <- pd_read(st)
-#' x <- pd_tax(x)
-#' res <- pd_tax_hier(x)
+#' res <- pd_taxa(x)
 #' 
 #' # with a taxmap
 #' res
@@ -37,7 +36,7 @@
 #' data(bird.orders)
 #' x <- pd_read(bird.orders)
 #' x <- pd_tax(x)
-#' res <- pd_tax_hier2(x) 
+#' res <- pd_taxa2(x) 
 #' res$taxmap
 #' res <- pd_query(res, startsWith(taxon_names, "C"))
 #' 
@@ -56,11 +55,12 @@
 #' }
 # pd_query <- function(x, tax_query = NULL, phy_query = NULL) {
 pd_query <- function(x, query) {
-  assert(x, "phylodiv")
+  assert(x, "PhyloDiv")
   # if (!is.null(phy_query)) stop("phy_query ignored for now")
-  x$tree$tip.label <- gsub("_", " ", x$tree$tip.label)
-  x$query_target <- query
-  structure(x, class = "phylodiv")
+  # x$tree$tip.label <- gsub("_", " ", x$tree$tip.label)
+  x$query <- query
+  return(x)
+  # structure(x, class = "phylodiv")
   # x$taxmap <- taxa::filter_taxa(x$taxmap, ...)
   # structure(x, class = "phylodiv")
 }

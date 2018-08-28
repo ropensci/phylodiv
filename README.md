@@ -26,57 +26,138 @@ remotes::install_github("ropensci/phylodiv")
 
 
 ```r
+source("https://bioconductor.org/biocLite.R")
+biocLite("ggtree")
+```
+
+
+```r
 library('phylodiv')
 ```
 
 ## The idea
 
-given a tree
-
-```r
+```
+# given a tree
 tree
-```
-
-read the tree
-
-```r
+# read the tree
 pd_read()
-```
-
-extract taxonomy from the tree
-
-```r
-pd_tax()
-```
-
-collect all higher taxonomic information from those names
-
-```r
-pd_tax_hier()
-```
-
-compose a phylogeny based query
-
-```r
+# collect all higher taxonomic information from those names
+pd_taxa()
+# compose a phylogeny based query
 pd_query()
-```
-
-send the query to a biodiversity backend, e.g., GBIF
-
-```r
+# send the query to a biodiversity backend, e.g., GBIF
 pd_biodiv()
+# visualize results
+pd_viz()
 ```
 
-visualize results
+## given a tree
+
 
 ```r
-pd_viz()
+library(ape)
+heli <- c("Helianthus agrestis", "Helianthus angustifolius", "Helianthus annuus", 
+  "Helianthus deserticola", "Helianthus divaricatus", "Helianthus eggertii", 
+  "Helianthus gracilentus", "Helianthus hirsutus", "Helianthus inexpectatus", 
+  "Helianthus laciniatus", "Helianthus maximiliani",
+  "Helianthus nuttallii", "Helianthus occidentalis", "Helianthus paradoxus", 
+  "Helianthus pauciflorus", "Helianthus petiolaris", "Helianthus porteri", 
+  "Helianthus verticillatus", "Helianthus winteri")
+tree <- rcoal(length(heli))
+(tree$tip.label <- heli)
+#>  [1] "Helianthus agrestis"      "Helianthus angustifolius"
+#>  [3] "Helianthus annuus"        "Helianthus deserticola"  
+#>  [5] "Helianthus divaricatus"   "Helianthus eggertii"     
+#>  [7] "Helianthus gracilentus"   "Helianthus hirsutus"     
+#>  [9] "Helianthus inexpectatus"  "Helianthus laciniatus"   
+#> [11] "Helianthus maximiliani"   "Helianthus nuttallii"    
+#> [13] "Helianthus occidentalis"  "Helianthus paradoxus"    
+#> [15] "Helianthus pauciflorus"   "Helianthus petiolaris"   
+#> [17] "Helianthus porteri"       "Helianthus verticillatus"
+#> [19] "Helianthus winteri"
+```
+
+## read the tree
+
+
+```r
+(res <- pd_read(tree))
+#> <PhyloDiv> 
+#>   trees: 1
+```
+
+The PhyloDiv object
+
+
+```r
+class(res)
+#> [1] "PhyloDiv" "R6"
+names(res)
+#>  [1] ".__enclos_env__"   "data"              "query"            
+#>  [4] "trees"             "clone"             "to_json"          
+#>  [7] "to_list"           "fetch_hierarchies" "add_tree"         
+#> [10] "initialize"        "print"
+```
+
+## collect all higher taxonomic information from those names
+
+
+```r
+(res <- pd_taxa(res))
+#> <PhyloDiv> 
+#>   trees: 1
+res$trees
+#> [[1]]
+#> <PhyloDivOne> 
+#>   tips: 19
+#>   nodes: 18
+#>   hierarchies: TRUE
+```
+
+## compose a phylogeny based query
+
+
+```r
+res <- pd_query(res, c("Helianthus agrestis", "Helianthus angustifolius", "Helianthus petiolaris"))
+res$query
+#> [1] "Helianthus agrestis"      "Helianthus angustifolius"
+#> [3] "Helianthus petiolaris"
+```
+
+## send the query to a biodiversity backend, e.g., GBIF
+
+
+```r
+(res <- pd_biodiv(res, type = 'facet', by = "country"))
+#> <PhyloDiv> 
+#>   trees: 1
+```
+
+## visualize results
+
+
+```r
+pd_vis(res, type = "facet")
+```
+
+![plot of chunk unnamed-chunk-11](tools/unnamed-chunk-11-1.png)
+
+## metadata
+
+
+```r
+pd_meta() # print to cosole
+pd_meta(file = (file <- tempfile())) # save to file
+jsonlite::fromJSON(file)
 ```
 
 ## Thinking out loud
 
 **general questions**
 - how do people interact with phylogenies in R? that is how to they most often refer to nodes/tips?
+- what about the use case of comparing 1 or more phylogenies against one another?
+- 
 
 **pd_read**:
 - make sure to handle any local or remote tree, and many R tree objects

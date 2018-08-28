@@ -6,7 +6,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   message = FALSE,
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.path = "tools/"
 )
 ```
 
@@ -41,46 +42,81 @@ library('phylodiv')
 
 ## The idea
 
-given a tree
-
-```r
+```
+# given a tree
 tree
-```
-
-read the tree
-
-```r
+# read the tree
 pd_read()
-```
-
-extract taxonomy from the tree
-
-```r
-pd_tax()
-```
-
-collect all higher taxonomic information from those names
-
-```r
-pd_tax_hier()
-```
-
-compose a phylogeny based query
-
-```r
+# collect all higher taxonomic information from those names
+pd_taxa()
+# compose a phylogeny based query
 pd_query()
-```
-
-send the query to a biodiversity backend, e.g., GBIF
-
-```r
+# send the query to a biodiversity backend, e.g., GBIF
 pd_biodiv()
+# visualize results
+pd_viz()
 ```
 
-visualize results
+## given a tree
 
-```r
-pd_viz()
+```{r}
+library(ape)
+heli <- c("Helianthus agrestis", "Helianthus angustifolius", "Helianthus annuus", 
+  "Helianthus deserticola", "Helianthus divaricatus", "Helianthus eggertii", 
+  "Helianthus gracilentus", "Helianthus hirsutus", "Helianthus inexpectatus", 
+  "Helianthus laciniatus", "Helianthus maximiliani",
+  "Helianthus nuttallii", "Helianthus occidentalis", "Helianthus paradoxus", 
+  "Helianthus pauciflorus", "Helianthus petiolaris", "Helianthus porteri", 
+  "Helianthus verticillatus", "Helianthus winteri")
+tree <- rcoal(length(heli))
+(tree$tip.label <- heli)
+```
+
+## read the tree
+
+```{r}
+(res <- pd_read(tree))
+```
+
+The PhyloDiv object
+
+```{r}
+class(res)
+names(res)
+```
+
+## collect all higher taxonomic information from those names
+
+```{r}
+(res <- pd_taxa(res))
+res$trees
+```
+
+## compose a phylogeny based query
+
+```{r}
+res <- pd_query(res, c("Helianthus agrestis", "Helianthus angustifolius", "Helianthus petiolaris"))
+res$query
+```
+
+## send the query to a biodiversity backend, e.g., GBIF
+
+```{r}
+(res <- pd_biodiv(res, type = 'facet', by = "country"))
+```
+
+## visualize results
+
+```{r}
+pd_vis(res, type = "facet")
+```
+
+## metadata
+
+```{r eval=FALSE}
+pd_meta() # print to cosole
+pd_meta(file = (file <- tempfile())) # save to file
+jsonlite::fromJSON(file)
 ```
 
 ## Thinking out loud

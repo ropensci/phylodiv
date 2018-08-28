@@ -1,7 +1,7 @@
 Package: phylodiv
 Title: Phylogenetic Biodiversity Query Tools
 Description: Phylogenetic Biodiversity Query Tools.
-Version: 0.0.3.9100
+Version: 0.0.3.9310
 License: MIT + file LICENSE
 URL: https://github.com/ropensci/phylodiv
 BugReports: https://github.com/ropensci/phylodiv/issues
@@ -26,10 +26,10 @@ Imports:
 Suggests:
     roxygen2 (>= 6.1.0),
     testthat,
-    vegan,
     choroplethr,
     choroplethrMaps,
-    patchwork
+    patchwork,
+    raster
 RoxygenNote: 6.1.0
 Remotes: ropensci/rgbif, thomasp85/patchwork
 X-schema.org-applicationCategory: Taxonomy

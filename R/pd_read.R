@@ -2,7 +2,7 @@
 #' 
 #' @export
 #' @param tree a phylogeny represented as a newick string or a
-#' `phylo` object
+#' `phylo` object, or a \pkg{tidytree} `tbl_tree` object
 #' @return an object of class `phylodiv`, a named list with slots:
 #' 
 #' - tree: phylo object
@@ -10,6 +10,13 @@
 #' - nodes: node labels
 #' 
 #' @examples
+#' # character
+#' x <- "((Strix_aluco:4.2,Asio_otus:4.2):3.1,Athene_noctua:7.3);"
+#' tree <- ape::read.tree(text = x)
+#' z <- pd_read(tree = tree)
+#' z
+#' 
+#' # phylo
 #' library(ape)
 #' data(chiroptera)
 #' st <- ape::subtrees(chiroptera)[[393]]
@@ -18,16 +25,30 @@
 #' x$tree
 #' x$tips
 #' x$nodes
+#' 
+#' # tbl_tree
+#' library(tidytree)
+#' library(ape)
+#' set.seed(2017)
+#' tree <- rtree(4)
+#' x <- as_data_frame(tree)
+#' pd_read(x)
 pd_read <- function(tree) {
-  assert(tree, c("character", "phylo"))
+  assert(tree, c("character", "phylo", "tbl_tree"))
   if (inherits(tree, "character")) {
-    st <- ape::read.tree(text = tree)
-    if (is.null(st)) stop("error in reading tree, check your input")
+    tree <- ape::read.tree(text = tree)
+    if (is.null(tree)) stop("error in reading tree, check your input")
   }
-  x <- list(
-    tree = tree,
-    tips = tree$tip.label,
-    nodes = tree$node.label
-  )
-  structure(x, class = "phylodiv")
+  if (inherits(tree, "tbl_tree")) {
+    tree <- tidytree::as.phylo(tree)
+  }
+  # x <- list(
+  #   tree = tree,
+  #   tips = tree$tip.label,
+  #   nodes = tree$node.label
+  # )
+  x <- PhyloDiv$new(PhyloDivOne$new(tree))
+  # class(x) <- "phylodiv"
+  set_last_phylodiv(x)
+  x
 }

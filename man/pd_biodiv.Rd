@@ -35,9 +35,9 @@ Gather biodiversity records
 library(ape)
 data(chiroptera)
 st <- ape::subtrees(chiroptera)[[393]]
-x <- pd_tax(pd_read(st))
-res <- pd_tax_hier(x)
-spp <- c("Eptesicus serotinus", "Eptesicus fuscus", 
+x <- pd_read(st)
+res <- pd_taxa(x)
+spp <- c("Eptesicus serotinus", "Eptesicus fuscus",
   "Eptesicus furinalis", "Eptesicus brasiliensis")
 res <- pd_query(res, spp)
 
