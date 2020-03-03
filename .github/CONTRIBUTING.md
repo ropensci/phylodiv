@@ -2,19 +2,19 @@
 
 ## Bugs?
 
-* Submit an issue on the [Issues page](https://github.com/ropensci/taxize/issues) - be sure to include R session information and a reproducible example.
+* Submit an issue on the [Issues page](https://github.com/ropensci/phylodiv/issues) - be sure to include R session information and a reproducible example.
 
 ## Code contributions
 
 ### Broad overview of contributing workflow
 
 * Fork this repo to your Github account
-* Clone your version on your account down to your machine from your account, e.g,. `git clone https://github.com/<yourgithubusername>/taxize.git`
-* Make sure to track progress upstream (i.e., on our version of `taxize` at `ropensci/taxize`) by doing `git remote add upstream https://github.com/ropensci/taxize.git`. Before making changes make sure to pull changes in from upstream by doing either `git fetch upstream` then merge later or `git pull upstream` to fetch and merge in one step
+* Clone your version on your account down to your machine from your account, e.g,. `git clone https://github.com/<yourgithubusername>/phylodiv.git`
+* Make sure to track progress upstream (i.e., on our version of `phylodiv` at `ropensci/phylodiv`) by doing `git remote add upstream https://github.com/ropensci/phylodiv.git`. Before making changes make sure to pull changes in from upstream by doing either `git fetch upstream` then merge later or `git pull upstream` to fetch and merge in one step
 * Make your changes (bonus points for making changes on a new feature branch)
 * Please do write a test(s) for your changes if they affect code and not just docs (see Tests below)
 * Push up to your account
-* Submit a pull request to home base at `ropensci/taxize`
+* Submit a pull request to home base at `ropensci/phylodiv`
 
 ### Tests
 
@@ -52,10 +52,9 @@ In addition to changing the code, do make sure to udpate the documentation if ap
 
 After code and documentation has been changed, update documentation by running either `devtools::document()` or `roxygen2::roxygenise()`.
 
-Make sure if you change what packages or even functions within packages are imported, most likely add the package to Imports in the DESCRIPTION file and list what functions are imported in the `taxize-package.R` file.
+Make sure if you change what packages or even functions within packages are imported, most likely add the package to Imports in the DESCRIPTION file and list what functions are imported in the `phylodiv-package.R` file.
 
 Be conservative about adding new dependencies.
-
 
 ### Style
 
@@ -63,9 +62,4 @@ Be conservative about adding new dependencies.
 * Use `<-` instead of `=` for assignment
 * Always use `snake_case` (and all lowercase) instead of `camelCase`
 
-
-
 ## Also, check out our [discussion forum](https://discuss.ropensci.org)
-
-### Prefer to Email? Get in touch: [myrmecocystus@gmail.com](mailto:myrmecocystus@gmail.com)
-
