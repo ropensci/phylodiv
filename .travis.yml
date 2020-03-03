@@ -21,6 +21,7 @@ addons:
 
 r_github_packages:
   - jimhester/covr
+  - ropensci/taxizedb
 
 bioc_packages:
   - ggtree

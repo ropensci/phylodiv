@@ -17,7 +17,7 @@ Depends:
     R(>= 3.1.0)
 Imports:
     ape,
-    taxizedb,
+    taxizedb (>= 0.1.9.9130),
     rgbif,
     tidytree,
     ggtree,
@@ -29,6 +29,7 @@ Suggests:
     patchwork,
     raster
 RoxygenNote: 7.0.2
+Remotes: ropensci/taxizedb
 X-schema.org-applicationCategory: Taxonomy
 X-schema.org-keywords: taxonomy, biology, nomenclature, phylogeny, identifiers, species, names
 X-schema.org-isPartOf: https://ropensci.org
