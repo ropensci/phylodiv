@@ -68,7 +68,9 @@ PhyloDiv <- R6::R6Class(
     #' @description coerce to JSON
     #' @return json/character
     to_json = function(...) {
-      jsonlite::toJSON(self$to_list(), auto_unbox = TRUE, ...)
+      lst <- self$to_list()
+      lst[[1]]$hierarchies <- unclass(lst[[1]]$hierarchies)
+      jsonlite::toJSON(lst, auto_unbox = TRUE, ...)
     }
   )
 )

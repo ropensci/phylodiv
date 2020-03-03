@@ -34,6 +34,7 @@ Uses \pkg{taxizedb} internally
 }
 
 \examples{
+\dontrun{
 library(ape)
 data(chiroptera)
 st <- ape::subtrees(chiroptera)[[393]]
@@ -42,4 +43,5 @@ st <- ape::subtrees(chiroptera)[[393]]
 res$trees
 res$trees[[1]]$hierarchies
 res$fetch_hierarchies()
+}
 }

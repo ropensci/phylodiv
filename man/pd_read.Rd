@@ -21,6 +21,7 @@ an object of class `phylodiv`, a named list with slots:
 Read a tree to a phylodiv object
 }
 \examples{
+\dontrun{
 # character
 x <- "((Strix_aluco:4.2,Asio_otus:4.2):3.1,Athene_noctua:7.3);"
 tree <- ape::read.tree(text = x)
@@ -44,4 +45,5 @@ set.seed(2017)
 tree <- rtree(4)
 x <- as_tibble(tree)
 pd_read(x)
+}
 }

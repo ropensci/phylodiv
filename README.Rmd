@@ -115,7 +115,8 @@ pd_vis(res, type = "facet")
 
 ```{r eval=FALSE}
 pd_meta() # print to cosole
-pd_meta(file = (file <- tempfile())) # save to file
+file <- tempfile()
+pd_meta(file = file) # save to file
 jsonlite::fromJSON(file)
 ```
 
