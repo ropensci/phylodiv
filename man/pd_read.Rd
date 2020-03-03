@@ -42,6 +42,6 @@ library(tidytree)
 library(ape)
 set.seed(2017)
 tree <- rtree(4)
-x <- as_data_frame(tree)
+x <- as_tibble(tree)
 pd_read(x)
 }

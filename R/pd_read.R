@@ -9,7 +9,7 @@
 #' - tips: tip labels
 #' - nodes: node labels
 #' 
-#' @examples
+#' @examples \dontrun{
 #' # character
 #' x <- "((Strix_aluco:4.2,Asio_otus:4.2):3.1,Athene_noctua:7.3);"
 #' tree <- ape::read.tree(text = x)
@@ -31,8 +31,9 @@
 #' library(ape)
 #' set.seed(2017)
 #' tree <- rtree(4)
-#' x <- as_data_frame(tree)
+#' x <- as_tibble(tree)
 #' pd_read(x)
+#' }
 pd_read <- function(tree) {
   assert(tree, c("character", "phylo", "tbl_tree"))
   if (inherits(tree, "character")) {

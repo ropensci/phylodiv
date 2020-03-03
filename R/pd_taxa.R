@@ -17,7 +17,7 @@
 #' @section taxonomic data:
 #' Uses \pkg{taxizedb} internally
 #'  
-#' @examples
+#' @examples \dontrun{
 #' library(ape)
 #' data(chiroptera)
 #' st <- ape::subtrees(chiroptera)[[393]]
@@ -26,6 +26,7 @@
 #' res$trees
 #' res$trees[[1]]$hierarchies
 #' res$fetch_hierarchies()
+#' }
 pd_taxa <- function(x, db = "ncbi", drop_no_data = TRUE, ...) {
   assert(x, "PhyloDiv")
   
@@ -78,7 +79,7 @@ pd_taxa <- function(x, db = "ncbi", drop_no_data = TRUE, ...) {
 #   })), idcol = FALSE)
 #   # tax$id <- seq_len(NROW(tax))
 #   tax$id <- gsub("\\s", "_", tax$species)
-#   ttree <- tidytree::as_data_frame(x$tree)
+#   ttree <- tidytree::as_tibble(x$tree)
 #   txmap <- taxa::parse_tax_data(tax, 
 #     class_cols = seq_along(tax), 
 #     datasets = list(tree = ttree),

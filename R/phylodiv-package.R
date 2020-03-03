@@ -2,7 +2,7 @@
 #'
 #' @importFrom ggtree ggtree %<+% geom_tiplab geom_tippoint aes
 #' @importFrom taxizedb classification
-#' @importFrom tidytree as_data_frame
+#' @importFrom tidytree as_tibble
 #' @importFrom rgbif map_fetch occ_data occ_search
 #' @importFrom data.table setDF rbindlist
 #' @importFrom graphics plot
