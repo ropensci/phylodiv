@@ -7,8 +7,8 @@ phylodiv
 [![Build Status](https://travis-ci.com/ropensci/phylodiv.svg?branch=master)](https://travis-ci.com/ropensci/phylodiv)
 [![Build status](https://ci.appveyor.com/api/projects/status/6mgc02mkd8j4sq3g/branch/master)](https://ci.appveyor.com/project/sckott/phylodiv-175/branch/master)
 [![codecov.io](https://codecov.io/github/ropensci/phylodiv/coverage.svg?branch=master)](https://codecov.io/github/ropensci/phylodiv?branch=master)
-[![rstudio mirror downloads](http://cranlogs.r-pkg.org/badges/phylodiv)](https://github.com/metacran/cranlogs.app)
-[![cran version](http://www.r-pkg.org/badges/version/phylodiv)](https://cran.r-project.org/package=phylodiv)
+[![rstudio mirror downloads](https://cranlogs.r-pkg.org/badges/phylodiv)](https://github.com/metacran/cranlogs.app)
+[![cran version](https://www.r-pkg.org/badges/version/phylodiv)](https://cran.r-project.org/package=phylodiv)
 
 
 `phylodiv`: Phylogenetic Biodiversity Query Tools
@@ -141,7 +141,7 @@ res$query
 pd_vis(res, type = "facet")
 ```
 
-![plot of chunk unnamed-chunk-11](tools/unnamed-chunk-11-1.png)
+![plot of chunk unnamed-chunk-11](man/figures/unnamed-chunk-11-1.png)
 
 ## metadata
 
@@ -193,7 +193,9 @@ jsonlite::fromJSON(file)
 * Please [report any issues or bugs](https://github.com/ropensci/phylodiv/issues).
 * License: MIT
 * Get citation information for `phylodiv` in R doing `citation(package = 'phylodiv')`
-* Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md).
+* Please note that this project is released with a [Contributor Code of Conduct][coc].
 By participating in this project you agree to abide by its terms.
 
 [![rofooter](https://ropensci.org/public_images/github_footer.png)](https://ropensci.org)
+
+[coc]: https://github.com/ropensci/phylodiv/blob/master/CODE_OF_CONDUCT.md
