@@ -1,17 +1,14 @@
 language: r
-sudo: false
 cache: packages
-dist: trusty
+os: linux
 
 r_github_packages:
   - jimhester/covr
-  - ropensci/rgbif
-  - thomasp85/patchwork
 
 bioc_packages:
   - ggtree
 
-matrix:
+jobs:
   include:
     - os: linux
       r: release
