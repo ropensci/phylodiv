@@ -4,8 +4,20 @@ os: linux
 
 addons:
   apt:
+    sources:
+      - sourceline: 'ppa:ubuntugis/ppa'
     packages:
-      - libudunits2-dev
+    - libudunits2-dev
+    - libv8-dev
+    - libprotobuf-dev
+    - libprotoc-dev
+    - libproj-dev
+    - libgeos-dev
+    - libgdal-dev
+    - protobuf-compiler
+    - valgrind
+    - libpq-dev
+    - netcdf-bin
 
 r_github_packages:
   - jimhester/covr
