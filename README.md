@@ -26,8 +26,7 @@ remotes::install_github("ropensci/phylodiv")
 
 
 ```r
-source("https://bioconductor.org/biocLite.R")
-biocLite("ggtree")
+BiocManager::install("ggtree")
 ```
 
 
